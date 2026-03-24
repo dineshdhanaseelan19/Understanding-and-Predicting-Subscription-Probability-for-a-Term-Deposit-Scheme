@@ -1,0 +1,2 @@
+# Understanding-and-Predicting-Subscription-Probability-for-a-Term-Deposit-Scheme
+This project focuses on understanding and predicting customer subscription behaviour for a term deposit scheme using logistic regression. The objective is to identify key factors that influence whether a customer subscribes to a financial product and to build a predictive model that supports data-driven marketing decisions.
