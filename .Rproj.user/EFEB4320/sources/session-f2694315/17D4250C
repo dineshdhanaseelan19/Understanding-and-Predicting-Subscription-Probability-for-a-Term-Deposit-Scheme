@@ -1,0 +1,26 @@
+{
+    "id": "17D4250C",
+    "path": "~/Github Portfolio/Understanding and predicting subscriptions probabilities for a term deposit scheme/scripts/03_modeling.R",
+    "project_path": "scripts/03_modeling.R",
+    "type": "r_source",
+    "hash": "1860127100",
+    "contents": "",
+    "dirty": false,
+    "created": 1774813891327.0,
+    "source_on_save": false,
+    "relative_order": 5,
+    "properties": {
+        "source_window_id": "",
+        "Source": "Source",
+        "cursorPosition": "10,27",
+        "scrollLine": "0"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1774984667,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1774984667397,
+    "read_only": false,
+    "read_only_alternatives": []
+}

@@ -1,0 +1,5 @@
+"Metric","Count"
+"Std residuals > |1.96|",646
+"Studentized residuals > |1.96|",646
+"Cooks distance > 1",0
+"Leverage > 2*(p+1)/n",5217
