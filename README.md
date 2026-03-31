@@ -1,96 +1,290 @@
-# Understanding-and-Predicting-Subscription-Probability-for-a-Term-Deposit-Scheme
-This project focuses on understanding and predicting customer subscription behaviour for a term deposit scheme using logistic regression. The objective is to identify key factors that influence whether a customer subscribes to a financial product and to build a predictive model that supports data-driven marketing decisions.
+---
+title: "README.md"
+author: "Dinesh Dhanaseelan"
+date: "`r Sys.Date()`"
+output: html_document
+---
 
-#Objectives
-Predict the likelihood of customer subscription (Yes/No)
-Identify significant factors influencing subscription decisions
-Evaluate model performance and interpret results
-Provide business recommendations based on insights
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
 
-#Dataset
-Dataset contains 40,000+ observations with 15 variables
-Includes:
-Demographic data (age, gender, marital status)
-Financial attributes (salary, loans, mortgage)
-Campaign-related features
-Target variable: subscribed (binary: yes/no)
+## R Markdown
 
-#Data Preprocessing
+# Understanding and Predicting Subscription Probability for a Term Deposit Scheme
 
-Key steps performed:
+## Project Overview
 
-Handling missing values using mode imputation
-Removing invalid entries (e.g., age = 999)
-Replacing "unknown" values with most frequent categories
-Standardizing categorical variables (case, format consistency)
-Grouping similar categories to reduce sparsity
-Converting categorical variables into factors
-Encoding target variable into binary numeric format
+This project focuses on predicting whether a customer will subscribe to a term deposit scheme using **logistic regression in R**. The objective is to identify key drivers of customer behaviour and build a robust predictive model to support **data-driven marketing decisions**.
 
-#Exploratory Data Analysis
-Distribution analysis of key variables
-Visualizations for:
-Age vs Subscription
-Salary vs Subscription
-Mortgage & Loan impact
-Gender differences
-Hypothesis-driven exploration (e.g., income and age impact on subscription)
+This is an enhanced version of an earlier academic assignment, with improvements in:
 
-#Model Development
-🔹 Model 1 (Baseline)
-Features: Age, Salary, Mortgage
-Observations:
-Age positively influences subscription
-Low salary significantly reduces likelihood
-Mortgage shows minimal impact
-🔹 Model 2 (Improved Model)
-Added features: Gender, Personal Loan
-Improvements:
-Reduced residual deviance
-Slight improvement in model fit
-Gender emerged as a significant predictor
+* data cleaning and preprocessing
+* feature engineering
+* model selection
+* threshold tuning
+* evaluation metrics
+* overfitting diagnostics
 
-#Model Evaluation
-Metrics used:
-Accuracy
-Confusion Matrix
-Pseudo R² (Hosmer-Lemeshow, Cox & Snell, Nagelkerke)
+---
 
-#Key Insight:
+## Business Objective
 
-Model shows limited predictive power (~30% accuracy)
-Indicates potential underfitting and need for more features
+Direct marketing campaigns are widely used by financial institutions to promote term deposit products. However, contacting all customers is inefficient.
 
-#Business Recommendations
-Target high-income and older customers
-Design campaigns focused on financially stable segments
-Improve model by:
-Adding behavioural or interaction data
-Using advanced models (e.g., Random Forest, XGBoost)
+This project aims to:
 
-#Tools & Technologies
-R Programming
-Libraries:
-tidyverse
-caret
-ggplot2
-car
-summarytools
+* identify customers most likely to subscribe
+* improve targeting efficiency
+* reduce marketing costs
+* support decision-making using predictive analytics
 
-#Project Structure
+---
+
+## Dataset Overview
+
+The dataset contains customer demographic, financial, and campaign-related information.
+
+### Key Features
+
+* Demographics: age, gender, occupation
+* Financial: salary, mortgage, loans
+* Banking relationship: savings account, current account, insurance products
+* Campaign details: contact method, duration, timing
+* History: previous campaign outcome
+* Macroeconomic indicators
+
+### Target Variable
+
+* **subscribed** (`yes` / `no`)
+
+### Class Imbalance
+
+* Majority class: **no**
+* Minority class: **yes**
+
+This imbalance makes metrics like **recall, F1-score, balanced accuracy, and ROC-AUC** more meaningful than accuracy alone.
+
+---
+
+## Project Structure
+
+```
 ├── data/
-├── scripts/
 ├── outputs/
+├── scripts/
+│   ├── 01_data_cleaning.R
+│   ├── 02_eda.R
+│   ├── 03_modeling.R
+│   └── 04_evaluation.R
+├── analysis.R
 ├── README.md
-└── analysis.R
+└── .Rproj
+```
 
-#Future Improvements
-Handle class imbalance more effectively
-Try advanced ML models
-Feature engineering for better predictive power
-Hyperparameter tuning
+---
 
-Author
-Dinesh Dhanseelan
-MSc Business Analytics | Data Analytics Enthusiast
+## Workflow
 
+### 1. Data Cleaning
+
+* handled missing and inconsistent values
+* removed invalid entries (e.g., age = 999)
+* standardized categorical variables
+* grouped sparse categories
+* converted variables into factors
+
+---
+
+### 2. Exploratory Data Analysis (EDA)
+
+* analysed class imbalance
+* explored relationships between variables and subscription
+* visualised key distributions
+* examined correlations
+
+---
+
+### 3. Modeling Approach
+
+Three logistic regression models were built:
+
+#### Baseline Model
+
+* limited predictors (age, salary, gender, etc.)
+* simple and interpretable
+* weak predictive power
+
+#### Full Model
+
+* includes a wide range of predictors
+* significantly improved model fit
+
+#### Stepwise Model (Final Model)
+
+* selected using AIC
+* balances performance and interpretability
+
+---
+
+## Model Performance
+
+### Model Comparison
+
+| Model    |   AIC | Residual Deviance |
+| -------- | ----: | ----------------: |
+| Baseline | 21933 |             21919 |
+| Full     | 11723 |             11633 |
+| Stepwise | 11716 |             11636 |
+
+---
+
+### Test Set Metrics
+
+| Model                     | Accuracy | Recall | Precision |    F1 | Balanced Accuracy |
+| ------------------------- | -------: | -----: | --------: | ----: | ----------------: |
+| Baseline (0.50)           |    0.887 |  0.000 |         — |     — |             0.500 |
+| Full (0.50)               |    0.926 |  0.558 |     0.725 | 0.631 |             0.766 |
+| Stepwise (0.50)           |    0.925 |  0.555 |     0.721 | 0.627 |             0.764 |
+| Stepwise (Best Threshold) |    0.861 |  0.927 |     0.445 | 0.602 |             0.890 |
+
+---
+
+### ROC-AUC
+
+| Model    |   AUC |
+| -------- | ----: |
+| Baseline | 0.660 |
+| Full     | 0.950 |
+| Stepwise | 0.950 |
+
+---
+
+## Key Insights
+
+* Customer relationship variables (accounts, insurance) are strong predictors
+* Previous campaign success significantly increases subscription likelihood
+* Campaign timing and duration strongly influence outcomes
+* Lower salary groups are less likely to subscribe
+* Threshold selection significantly impacts model performance
+
+---
+
+## Threshold Strategy
+
+Two strategies were evaluated:
+
+* **0.50 Threshold**
+
+  * higher accuracy and precision
+  * lower recall
+
+* **Optimized Threshold (~0.096)**
+
+  * much higher recall (captures more subscribers)
+  * lower precision
+
+👉 Business interpretation:
+
+* use lower threshold when missing a potential customer is costly
+* use default threshold when minimizing false positives is important
+
+---
+
+## Overfitting Check
+
+| Dataset |   AUC |
+| ------- | ----: |
+| Train   | 0.950 |
+| Test    | 0.950 |
+
+The nearly identical AUC values indicate:
+
+* strong generalization
+* minimal overfitting
+
+---
+
+## Model Diagnostics
+
+### Residual Analysis
+
+* no extreme influential observations (Cook’s distance < 1)
+* manageable residual distribution
+
+### Multicollinearity
+
+High correlation observed among macroeconomic variables:
+
+* emp_var_rate
+* euribor_3m
+* n_employed
+
+👉 These variables should be interpreted cautiously
+
+---
+
+## Important Modeling Consideration
+
+`contact_duration` is one of the strongest predictors.
+
+However:
+
+* it may only be known **after customer interaction**
+* not suitable for pre-campaign targeting
+
+👉 This highlights the difference between:
+
+* predictive performance
+* real-world deployment
+
+---
+
+## Tools & Technologies
+
+* R
+* dplyr
+* ggplot2
+* caret
+* pROC
+* MASS
+* car
+
+---
+
+## How to Run
+
+Run the full pipeline:
+
+```r
+source("analysis.R")
+```
+
+Or step-by-step:
+
+```r
+source("scripts/01_data_cleaning.R")
+source("scripts/02_eda.R")
+source("scripts/03_modeling.R")
+source("scripts/04_evaluation.R")
+```
+
+---
+
+## Conclusion
+
+The improved modeling approach significantly outperforms the earlier version by incorporating richer features and proper evaluation techniques. The final stepwise model demonstrates strong predictive power with excellent ROC-AUC and stable generalization performance.
+
+The project highlights the importance of:
+
+* feature selection
+* threshold tuning
+* evaluation beyond accuracy
+* balancing statistical performance with business applicability
+
+---
+
+## Author
+
+**Dinesh Dhanaseelan**
+MSc Business Analytics | Data Analyst | Machine Learning Enthusiast
